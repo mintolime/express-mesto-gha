@@ -1,0 +1,6 @@
+.form__input_login {
+  background-color: black;
+  color: white;
+  border-bottom: 2px solid #ccc;
+  font-weight: 500;
+}

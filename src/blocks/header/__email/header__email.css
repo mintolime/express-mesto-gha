@@ -1,0 +1,7 @@
+.header__email {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  padding: 0;
+  margin: 0;
+}

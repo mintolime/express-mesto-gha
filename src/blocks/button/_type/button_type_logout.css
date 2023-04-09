@@ -1,0 +1,9 @@
+.button_type_logout {
+  text-decoration: none;
+  color: #A9A9A9;
+  cursor: pointer;
+}
+
+.button_type_logout:hover {
+  opacity: .6;
+}

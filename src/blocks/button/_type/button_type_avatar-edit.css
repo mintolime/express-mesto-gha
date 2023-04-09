@@ -1,0 +1,16 @@
+.button_type_avatar-edit {
+  background-image: url('../../../images/icon/icon-edit-avatar.svg');
+  width: 120px;
+  height: 125px;
+  border-radius: 50%;
+  position: absolute;
+  opacity: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: .9s ease;
+}
+
+.button_type_avatar-edit:hover {
+  opacity: .8;
+  background-color: #000;
+}

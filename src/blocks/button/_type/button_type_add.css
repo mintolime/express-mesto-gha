@@ -1,0 +1,19 @@
+.button_type_add {
+  background: url('../../../images/icon/icon-add.png') no-repeat center;
+  border: 2px solid #ffffff;
+  padding: 20px 138px;
+
+}
+
+@media screen and (min-width: 720px) {
+  .button_type_add {
+    padding: 20px 72px;
+    /*задает размер кнопки*/
+    margin-left: auto;
+    /*выравнивание кнопки по правому краю*/
+    background-size: 22px 22px;
+  }
+}
+.button_type_add:hover {
+  opacity: .6;
+}

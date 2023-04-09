@@ -1,0 +1,19 @@
+.profile__content {
+  padding-top: 23px;
+  padding-bottom: 30px;
+  text-align: center;
+  gap: 10px 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  grid-template-areas:
+    "name edit-button"
+    "info info";
+}
+
+@media screen and (min-width: 720px) {
+  .profile__content {
+    padding: 0;
+    text-align: start;
+  }
+}

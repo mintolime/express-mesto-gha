@@ -1,0 +1,8 @@
+.cards__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 10px;
+  color: #000;
+}

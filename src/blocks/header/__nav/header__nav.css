@@ -1,0 +1,10 @@
+.header__nav {
+  max-width: 300px;
+  display: flex;
+  gap: 24px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  align-items: center;
+}

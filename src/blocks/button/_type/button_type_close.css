@@ -1,0 +1,23 @@
+.button_type_close {
+  background: url('../../../images/icon/icon-close.png');
+  background-size: cover;
+  border: none;
+  position: absolute;
+  top: -35px;
+  right: 0;
+  width: 20px;
+  height: 20px;
+}
+
+@media screen and (min-width: 720px) {
+  .button_type_close {
+    top: -45px;
+    right: -45px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.button_type_close:hover {
+  opacity: .6;
+}

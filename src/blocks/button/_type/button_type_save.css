@@ -1,0 +1,26 @@
+.button_type_save {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  width: 100%;
+  color: #fff;
+  border-radius: 2px;
+  margin-top: 17px;
+  padding: 13px 84px;
+  transition: 0.3s ease;
+}
+
+@media screen and (min-width: 720px) {
+  .button_type_save {
+    padding-right: 124px;
+    padding-left: 124px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
+
+.button_type_save:hover {
+  opacity: .8;
+  transform: scale(0.98);
+}

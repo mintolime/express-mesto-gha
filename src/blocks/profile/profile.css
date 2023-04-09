@@ -1,0 +1,13 @@
+.profile {
+  width: 100%;
+  display: flex;
+  align-items: center;
+   flex-direction: column;
+}
+
+@media screen and (min-width: 720px) {
+  .profile {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+}

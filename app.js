@@ -1,11 +1,11 @@
 const express = require('express');
-const moongoose = require('moongoose')
+const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 const router = require('./routes');
 
 const app = express(router);
 
-moongoose.connect()
+mongoose.connect('mongodb://127.0.0.1:27017/mestodb')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -1,6 +1,0 @@
-.cards__likes_items {
-  display: flex;
-  flex-direction: column;
-  min-height: 41px;
-  justify-content: center;
-}

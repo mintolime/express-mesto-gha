@@ -1,8 +1,8 @@
 const User = require('../models/user');
 
 const createUser = (req, res) => {
-  const { name, email } = req.body;
-  User.create({ name, email })
+  const { name, about,avatar} = req.body;
+  User.create({ name, about,avatar})
     .then((newUser) => {
       res.send(newUser);
     })

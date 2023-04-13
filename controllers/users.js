@@ -48,9 +48,9 @@ const updateUserProfile = (req, res) => {
 
 const updateUserAvatar = (req, res) => {
   const  userId  = req.user._id;
-  const { link } = req.body;
+  const { avatar } = req.body;
 
-  User.findByIdAndUpdate(userId, { link }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => res.status(500).send({ message: `Произошла ошибка ${err}` }));
 };

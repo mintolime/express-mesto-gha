@@ -1,15 +1,13 @@
 const Card = require('../models/card');
 
 const createCard = (req, res) => {
-  const { id } = req.user;
+  const { _id } = req.user;
   const { name, link } = req.body;
-  Card.create({
-    link,
-    name,
-    owner: id,
-  })
+
+  Card.create({ name, link, owner: _id })
     .then((newCard) => {
       res.send(newCard);
+      console.log(newCard);
     })
     .catch((err) => {
       res.status(400).send(err);
@@ -31,8 +29,8 @@ const getCard = (req, res) => {
   console.log(req.body);
 };
 
-const getAllCard = (req, res) =>{
- Card.find({})
+const getAllCard = (req, res) => {
+  Card.find({})
     .orFail()
     .then((card) => {
       res.send(card);
@@ -41,6 +39,6 @@ const getAllCard = (req, res) =>{
       console.log(`Не найдено ${err}`);
       res.status(400).send(err);
     });
-}
+};
 
 module.exports = { createCard, getAllCard, getCard };

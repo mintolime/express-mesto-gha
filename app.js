@@ -20,5 +20,5 @@ app.use((req, res, next) => {
 app.use(router);
 
 app.listen(3000, () => {
-  console.log('start !!!');
+  console.log('server working');
 });

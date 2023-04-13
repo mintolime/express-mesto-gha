@@ -1,8 +1,8 @@
 const User = require('../models/user');
 
 const createUser = (req, res) => {
-  const { name, about,avatar} = req.body;
-  User.create({ name, about,avatar})
+  const { name, about, avatar } = req.body;
+  User.create({ name, about, avatar })
     .then((newUser) => {
       res.send(newUser);
     })
@@ -12,5 +12,9 @@ const createUser = (req, res) => {
   console.log(req.body);
 };
 
+const getUser = (req, res) => {
+  const { id } = req.user;
+  console.log(req.user)
+};
 
-module.exports = { createUser };
+module.exports = { createUser, getUser };

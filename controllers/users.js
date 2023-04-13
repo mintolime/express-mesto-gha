@@ -20,12 +20,13 @@ const getUser = (req, res) => {
   const { userId } = req.params;
   console.log(userId);
   User.findById(userId)
-   .then((user) => {
+    .then((user) => {
       if (!user) {
         res.status(NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден.' });
       } else {
         res.send(user);
-      }})
+      }
+    })
     .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
 };
 

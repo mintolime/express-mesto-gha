@@ -15,17 +15,12 @@ const createCard = (req, res) => {
   console.log(req.body);
 };
 
-const getCard = (req, res) => {
+const deleteCard = (req, res) => {
   const { cardId } = req.params;
-  Card.findById(cardId)
-    .orFail()
-    .then((card) => {
-      res.send(card);
-    })
-    .catch((err) => {
-      console.log('error:', err);
-      res.status(400).send(err);
-    });
+  console.log(req.params);
+  Card.findByIdAndRemove(cardId)
+    .then((card) => res.send({ data: card }))
+    .catch((err) => res.status(500).send({ message: `Произошла ошибка ${err}` }));
   console.log(req.body);
 };
 
@@ -41,4 +36,24 @@ const getAllCard = (req, res) => {
     });
 };
 
-module.exports = { createCard, getAllCard, getCard };
+const likeCard = (req, res) => {
+  const owner = req.user._id;
+  const { cardId } = req.params;
+  Card.findByIdAndUpdate(
+    cardId,
+    { $addToSet: { likes: owner } }, // добавить _id в массив, если его там нет
+    { new: true },
+  );
+};
+
+const dislikeCard = (req, res) => {
+  const owner = req.user._id;
+  const { cardId } = req.params;
+  Card.findByIdAndUpdate(
+    cardId,
+    { $pull: { likes: owner } }, // убрать _id из массива
+    { new: true },
+  );
+};
+
+module.exports = { createCard, getAllCard, deleteCard, likeCard, dislikeCard };

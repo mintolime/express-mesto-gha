@@ -13,8 +13,8 @@ const createUser = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  const { userId } = req.params;
-  User.findById(userId)
+  const { id } = req.params;
+  User.findById(id)
     .orFail()
     .then((card) => {
       res.send(card);
@@ -36,4 +36,24 @@ const getAllUsers = (req, res) => {
   console.log(req.body);
 };
 
-module.exports = { createUser, getUser, getAllUsers };
+const updateUserProfile = (req, res) => {
+  const { userId } = req.user._id;
+  const { name, about } = req.body;
+
+  User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
+    .then((user) => res.send(user))
+    .catch((err) => res.status(500).send({ message: `Произошла ошибка ${err}` }));
+};
+
+const updateUserAvatar = (req, res) => {
+  const { userId } = req.user._id;
+  const { link } = req.body;
+
+  User.findByIdAndUpdate(userId, { link }, { new: true, runValidators: true })
+    .then((user) => res.send(user))
+    .catch((err) => res.status(500).send({ message: `Произошла ошибка ${err}` }));
+};
+
+
+
+module.exports = { createUser, getUser, getAllUsers, updateUserProfile,updateUserAvatar };

@@ -18,7 +18,6 @@ const createUser = (req, res) => {
 
 const getUser = (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
   User.findById(userId)
     .then((user) => {
       if (!user) {
@@ -36,7 +35,6 @@ const getAllUsers = (req, res) => {
       res.send(card);
     })
     .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
-  console.log(req.body);
 };
 
 const updateUserProfile = (req, res) => {
@@ -81,4 +79,6 @@ const updateUserAvatar = (req, res) => {
     });
 };
 
-module.exports = { createUser, getUser, getAllUsers, updateUserProfile, updateUserAvatar };
+module.exports = {
+  createUser, getUser, getAllUsers, updateUserProfile, updateUserAvatar,
+};

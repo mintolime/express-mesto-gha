@@ -13,8 +13,27 @@ const createUser = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  const { id } = req.user;
-  console.log(req.user)
+  const { userId } = req.params;
+  User.findById(userId)
+    .orFail()
+    .then((card) => {
+      res.send(card);
+    })
+    .catch((err) => {
+      console.log('error:', err);
+      res.status(400).send(err);
+    });
+  console.log(req.body);
 };
 
-module.exports = { createUser, getUser };
+const getAllUsers = (req, res) => {
+  User.find({})
+    .orFail()
+    .then((card) => {
+      res.send(card);
+    })
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  console.log(req.body);
+};
+
+module.exports = { createUser, getUser, getAllUsers };

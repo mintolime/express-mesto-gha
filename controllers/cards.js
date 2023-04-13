@@ -18,17 +18,29 @@ const createCard = (req, res) => {
 };
 
 const getCard = (req, res) => {
-  const { id } = req.params;
-  Card.findById(id)
+  const { cardId } = req.params;
+  Card.findById(cardId)
     .orFail()
     .then((card) => {
       res.send(card);
     })
     .catch((err) => {
-      console.log("error:", err)
+      console.log('error:', err);
       res.status(400).send(err);
     });
   console.log(req.body);
 };
 
-module.exports = { createCard, getCard };
+const getAllCard = (req, res) =>{
+ Card.find({})
+    .orFail()
+    .then((card) => {
+      res.send(card);
+    })
+    .catch((err) => {
+      console.log(`Не найдено ${err}`);
+      res.status(400).send(err);
+    });
+}
+
+module.exports = { createCard, getAllCard, getCard };

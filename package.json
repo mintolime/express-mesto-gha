@@ -8,14 +8,14 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "lint": "npx eslint .",
-    "fix":"eslint --fix --ext .js,.jsx ."
+    "fix": "eslint --fix --ext .js,.jsx ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mintolime/express-mesto-gha.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "mintolime",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mintolime/express-mesto-gha/issues"

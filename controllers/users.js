@@ -21,7 +21,7 @@ const getUser = (req, res) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        res.status(NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден.' });
+        res.status(BAD_REQUEST).send({ message: 'Пользователь по указанному _id не найден.' });
       } else {
         res.send(user);
       }
@@ -44,7 +44,7 @@ const updateUserProfile = (req, res) => {
   User.findByIdAndUpdate(ownerId, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        res.status(NOT_FOUND).send({ message: ' Пользователь с указанным _id не найден' });
+        res.status(BAD_REQUEST).send({ message: ' Пользователь с указанным _id не найден' });
       } else {
         res.send(user);
       }

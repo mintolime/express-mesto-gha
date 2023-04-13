@@ -14,11 +14,11 @@ const createUser = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  const { id } = req.params;
-  User.findById(id)
-    .orFail()
-    .then((card) => {
-      res.send(card);
+  const { userId } = req.params;
+  console.log(userId )
+  User.findById(userId )
+    .then((user) => {
+      res.send(user);
     })
     .catch((err) => {
       console.log('error:', err);
@@ -29,7 +29,6 @@ const getUser = (req, res) => {
 
 const getAllUsers = (req, res) => {
   User.find({})
-    .orFail()
     .then((card) => {
       res.send(card);
     })
@@ -38,19 +37,19 @@ const getAllUsers = (req, res) => {
 };
 
 const updateUserProfile = (req, res) => {
-  const  userId  = req.user._id;
+  const  ownerId  = req.user._id;
   const { name, about } = req.body;
   console.log(req.user._id)
-  User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(ownerId, { name, about }, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => res.status(500).send({ message: `Произошла ошибка ${err}` }));
 };
 
 const updateUserAvatar = (req, res) => {
-  const  userId  = req.user._id;
+  const  ownerId  = req.user._id;
   const { avatar } = req.body;
 
-  User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(ownerId, { avatar }, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => res.status(500).send({ message: `Произошла ошибка ${err}` }));
 };

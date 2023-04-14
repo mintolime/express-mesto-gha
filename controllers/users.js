@@ -20,12 +20,10 @@ const getUser = (req, res) => {
   const { userId } = req.params;
   User.findById(userId)
     .then((user) => {
-      if (user) {
-        return res.send(user);
+      if (!user) {
+        return res.status(NOT_FOUND).send({ message: ' Пользователь с указанным _id не найден.' });
       }
-      return res
-        .status(NOT_FOUND)
-        .send({ message: 'Пользователь по указанному _id не найден' });
+      return res.send(user);
     })
     .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
 };
@@ -45,10 +43,9 @@ const updateUserProfile = (req, res) => {
   User.findByIdAndUpdate(ownerId, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        res.status(NOT_FOUND).send({ message: ' Пользователь с указанным _id не найден' });
-      } else {
-        res.send(user);
+        return res.status(NOT_FOUND).send({ message: ' Пользователь с указанным _id не найден.' });
       }
+      return res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -66,10 +63,9 @@ const updateUserAvatar = (req, res) => {
   User.findByIdAndUpdate(ownerId, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        res.status(NOT_FOUND).send({ message: ' Пользователь с указанным _id не найден.' });
-      } else {
-        res.send(user);
+        return res.status(NOT_FOUND).send({ message: ' Пользователь с указанным _id не найден.' });
       }
+      return res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {

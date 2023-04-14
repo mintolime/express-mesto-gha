@@ -75,6 +75,13 @@ const dislikeCard = (req, res) => {
     { $pull: { likes: owner } },
     { new: true },
   )
+    .then((card) => {
+      if (!card) {
+        res.status(NOT_FOUND).send({ message: ' Передан несуществующий _id карточки' });
+      } else {
+        res.send(card);
+      }
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные для снятии лайка.' });

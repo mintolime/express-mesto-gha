@@ -5,7 +5,7 @@ const router = require('./routes');
 
 const app = express(router);
 
-mongoose.connect('mongodb://localhost:27017/mestodb');
+mongoose.connect('mongodb+srv://vmesto-testa:MHe0Ao91nGDbYhpV@cluster1.zpt32lo.mongodb.net/test');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

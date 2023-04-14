@@ -20,12 +20,17 @@ const getUser = (req, res) => {
   const { userId } = req.params;
   User.findById(userId)
     .then((user) => {
-      if (!user) {
-        return res.status(NOT_FOUND).send({ message: ' Пользователь с указанным _id не найден.' });
+      if (user) {
+        return res.send(user);
       }
-      return res.send(user);
+      return res.status(NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден' });
     })
-    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные пользователя.' });
+      }
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+    });
 };
 
 const getAllUsers = (req, res) => {

@@ -28,6 +28,7 @@ const deleteCard = (req, res) => {
           message: 'Карточка с указанным id не найдена.',
         });
       }
+      console.log(card)
       res.send(card);
     })
     .catch((err) => {

@@ -11,7 +11,7 @@ const createCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(BAD_REQUEST).send({ message: `Переданы некорректные данные при создании карточки. ${err.message}` });
+        res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные при создании карточки' });
       } else {
         res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка,попробуйте ещё раз' });
       }
@@ -32,14 +32,11 @@ const deleteCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(BAD_REQUEST).send({
-          message: 'Карточка с указанным id не найдена.',
+        return res.status(BAD_REQUEST).send({
+          message: 'Переданы некорректные данные для удаления карточки',
         });
-        return;
       }
-      res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: 'Произошла ошибка' });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка,попробуйте ещё раз' });
     });
 };
 
@@ -64,10 +61,11 @@ const likeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные для постановки лайка' });
-      } else {
-        res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка,попробуйте ещё раз' });
+        return res.status(BAD_REQUEST).send({
+          message: 'Переданы некорректные данные для постановки лайка',
+        });
       }
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка,попробуйте ещё раз' });
     });
 };
 
@@ -87,10 +85,11 @@ const dislikeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные для снятии лайка.' });
-      } else {
-        res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка,попробуйте ещё раз' });
+        return res.status(BAD_REQUEST).send({
+          message: 'Переданы некорректные данные для удаления лайка',
+        });
       }
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка,попробуйте ещё раз' });
     });
 };
 

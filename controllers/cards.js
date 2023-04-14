@@ -24,17 +24,22 @@ const deleteCard = (req, res) => {
   Card.findByIdAndRemove(cardId)
     .then((card) => {
       if (!card) {
-        res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
-      } else {
-        res.send(card);
+        res.status(NOT_FOUND).send({
+          message: 'Карточка с указанным id не найдена.',
+        });
       }
+      res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(BAD_REQUEST).send({ message: 'Карточка не найдена' });
-      } else {
-        res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка,попробуйте ещё раз' });
+        res.status(BAD_REQUEST).send({
+          message: 'Карточка с указанным id не найдена.',
+        });
+        return;
       }
+      res
+        .status(INTERNAL_SERVER_ERROR)
+        .send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -53,10 +58,9 @@ const likeCard = (req, res) => {
   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: owner } }, { new: true })
     .then((card) => {
       if (!card) {
-        res.status(NOT_FOUND).send({ message: ' Передан несуществующий _id карточки' });
-      } else {
-        res.send(card);
+        return res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
       }
+      return res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -77,10 +81,9 @@ const dislikeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(NOT_FOUND).send({ message: ' Передан несуществующий _id карточки' });
-      } else {
-        res.send(card);
+        return res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
       }
+      return res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {

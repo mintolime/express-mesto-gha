@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const router = require('./routes');
+const { NOT_FOUND } = require('./utils/errors');
 
 const app = express(router);
 
@@ -18,6 +19,12 @@ app.use((req, res, next) => {
 });
 
 app.use(router);
+
+app.use((req, res) => {
+  res.status(NOT_FOUND).send({
+    message: 'Такого адреса не существует',
+  });
+});
 
 app.listen(3000, () => {
   console.log('server working');

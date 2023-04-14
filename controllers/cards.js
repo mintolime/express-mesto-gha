@@ -42,7 +42,6 @@ const deleteCard = (req, res) => {
 
 const getAllCard = (req, res) => {
   Card.find({})
-    .orFail()
     .then((card) => {
       res.send(card);
     })

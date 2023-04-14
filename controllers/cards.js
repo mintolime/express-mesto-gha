@@ -21,7 +21,7 @@ const createCard = (req, res) => {
 const deleteCard = (req, res) => {
   const { cardId } = req.params;
 
-  Card.findByIdAndRemove(cardId)
+  Card.findOneAndDelete(cardId)
     .then((card) => {
       if (!card) {
         res.status(NOT_FOUND).send({

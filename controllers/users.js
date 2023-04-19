@@ -4,7 +4,7 @@ const {
   BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED_ERROR,
 } = require('../utils/errors');
 
-const Login = (req, res) => {
+const login = (req, res) => {
   const { email, password } = req.body;
 
   User.findOne({ email })
@@ -129,5 +129,5 @@ const updateUserAvatar = (req, res) => {
 };
 
 module.exports = {
-  Login, createUser, getUser, getAllUsers, updateUserProfile, updateUserAvatar,
+  login, createUser, getUser, getAllUsers, updateUserProfile, updateUserAvatar,
 };

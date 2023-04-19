@@ -1,6 +1,36 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../utils/errors');
+const {
+  BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED_ERROR,
+} = require('../utils/errors');
+
+const Login = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return res.status(NOT_FOUND)
+          .send({ message: ' Пользователь с указанными данными не найден.' });
+      }
+
+      return bcrypt.compare(password, user.password);
+    })
+    .then((matched) => {
+      if (!matched) {
+        return Promise.reject(new Error('Неправильные почта или пароль'));
+      }
+      return res.send({
+        token: 'Здесь нужно отправить токен, но мы ещё не научились это делать',
+      });
+    })
+    .catch((err) => {
+      // возвращаем ошибку аутентификации
+      res
+        .status(UNAUTHORIZED_ERROR)
+        .send({ message: err.message });
+    });
+};
 
 const createUser = (req, res) => {
   const {
@@ -99,5 +129,5 @@ const updateUserAvatar = (req, res) => {
 };
 
 module.exports = {
-  createUser, getUser, getAllUsers, updateUserProfile, updateUserAvatar,
+  Login, createUser, getUser, getAllUsers, updateUserProfile, updateUserAvatar,
 };

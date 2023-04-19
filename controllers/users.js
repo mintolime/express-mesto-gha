@@ -2,8 +2,12 @@ const User = require('../models/user');
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../utils/errors');
 
 const createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
+  User.create({
+    name, about, avatar, email, password,
+  })
     .then((newUser) => {
       res.send(newUser);
     })

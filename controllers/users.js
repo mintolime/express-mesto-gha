@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 const User = require('../models/user');
 const {
   BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED_ERROR,
@@ -7,22 +9,14 @@ const {
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email })
+  return User.findUserByCredentials(email, password)
     .then((user) => {
-      if (!user) {
-        return res.status(NOT_FOUND)
-          .send({ message: ' Пользователь с указанными данными не найден.' });
-      }
-
-      return bcrypt.compare(password, user.password);
-    })
-    .then((matched) => {
-      if (!matched) {
-        return Promise.reject(new Error('Неправильные почта или пароль'));
-      }
-      return res.send({
-        token: 'Здесь нужно отправить токен, но мы ещё не научились это делать',
-      });
+      const token = jwt.sign(
+        { _id: user._id },
+        'super-strong-secret',
+        { expiresIn: '7d' }
+      );
+      res.send({ token });
     })
     .catch((err) => {
       // возвращаем ошибку аутентификации

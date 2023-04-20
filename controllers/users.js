@@ -13,7 +13,7 @@ const login = (req, res) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        'super-strong-secret',
+        'token',
         { expiresIn: '7d' },
       );
       res.send({ token });

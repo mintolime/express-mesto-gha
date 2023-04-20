@@ -5,7 +5,7 @@ const User = require('../models/user');
 const {
   BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED_ERROR,
 } = require('../utils/errors');
-
+// при роуте приходит токен
 const login = (req, res) => {
   const { email, password } = req.body;
 
@@ -14,7 +14,7 @@ const login = (req, res) => {
       const token = jwt.sign(
         { _id: user._id },
         'super-strong-secret',
-        { expiresIn: '7d' }
+        { expiresIn: '7d' },
       );
       res.send({ token });
     })

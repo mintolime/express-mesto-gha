@@ -48,9 +48,28 @@ const createUser = (req, res) => {
     });
 };
 
-const getUser = (req, res) => {
+const getUserById = (req, res) => {
   const { userId } = req.params;
   User.findById(userId)
+    .then((user) => {
+      if (user) {
+        return res.send(user);
+      }
+      return res.status(NOT_FOUND)
+        .send({ message: 'Пользователь по указанному _id не найден' });
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные пользователя.' });
+      }
+      return res.status(INTERNAL_SERVER_ERROR)
+        .send({ message: 'Произошла ошибка' });
+    });
+};
+
+const getUserProfile = (req, res) => {
+  const ownerId = req.user._id;
+  User.findById(ownerId)
     .then((user) => {
       if (user) {
         return res.send(user);
@@ -123,5 +142,5 @@ const updateUserAvatar = (req, res) => {
 };
 
 module.exports = {
-  login, createUser, getUser, getAllUsers, updateUserProfile, updateUserAvatar,
+  login, createUser, getUserById, getUserProfile, getAllUsers, updateUserProfile, updateUserAvatar,
 };

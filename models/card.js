@@ -25,6 +25,6 @@ const cardSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-});
+}, { versionKey: false }); // для скрытия версий в момент создания
 
 module.exports = mongoose.model('card', cardSchema);

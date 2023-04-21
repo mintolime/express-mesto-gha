@@ -5,14 +5,15 @@ const { UNAUTHORIZED_ERROR } = require('../utils/errors');
 const auth = (req, res, next) => {
   // тут будет вся авторизация
   const { authorization } = req.headers;
-  if (!authorization || !authorization.startWith('Bearer ')) {
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     return res.status(UNAUTHORIZED_ERROR)
       .send({ message: 'Необходима авторизация' });
   }
   const token = authorization.replace('Bearer ', '');
   let payload;
+
   try {
-    payload = jwt.verify(token, 'token');
+    payload = jwt.verify(token, 'SECRET_KEY');
   } catch (err) {
     return res.status(UNAUTHORIZED_ERROR)
       .send({ message: 'Необходима авторизация' });

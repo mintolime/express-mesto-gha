@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'https://images.unsplash.com/photo-1641478740308-2ee190bb5ec7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1153&q=80',
     validate: {
-      validator: (v) => validator.isURL(v),
+      validator: (value) => validator.isURL(value),
       message: 'Неправильный формат почты URL',
     },
   },
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     validate: {
-      validator: (v) => validator.isEmail(v),
+      validator: (value) => validator.isEmail(value),
       message: 'Неправильный формат почты',
     },
   },
@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     select: false,
   },
-});
+}, { versionKey: false }); // для скрытия версий в момент создания
 
 // eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {

@@ -13,10 +13,12 @@ const login = (req, res) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        'token',
+        'SECRET_KEY',
         { expiresIn: '7d' },
       );
-      res.send({ token });
+      res.cookie('jwt', token, {
+        httpOnly: true,
+      }).send({ token });
     })
     .catch((err) => {
       // возвращаем ошибку аутентификации
@@ -67,9 +69,9 @@ const getUserById = (req, res) => {
     });
 };
 
+// id прилетает из функции, но там не прилетает тот id , который приходит с авторизацией
 const getUserProfile = (req, res) => {
-  const ownerId = req.user._id;
-  User.findById(ownerId)
+  User.findById(req.user._id)
     .then((user) => {
       if (user) {
         return res.send(user);

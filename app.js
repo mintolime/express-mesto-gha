@@ -24,12 +24,12 @@ const limiter = rateLimit({
 // Apply the rate limiting middleware to all requests
 app.use(limiter);
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '6437e5f06ba23aae2269cb79',
-  };
-  next();
-});
+// app.use((req, res, next) => {
+//   req.user = {
+//     _id: '64429bf7cd753ba50936bbed',
+//   };
+//   next();
+// });
 
 app.use(router);
 

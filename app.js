@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const { celebrate, Joi } = require('celebrate');
+const { errors } = require('celebrate');
 
 const router = require('./routes');
 const { auth } = require('./middlewares/auth');
@@ -19,6 +20,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
+
 // функционал работы роутеров
 app.post(
   '/signin',
@@ -44,16 +46,18 @@ app.post(
   }),
   createUser,
 );
-app.use(auth);
+// защита всех роутеров авторизацией
+app.use('*', auth);
 // Apply the rate limiting middleware to all requests
 app.use(limiter);
 app.use(router);
 
-app.use((next) => {
-  next(new NotFoundError('Такого адреса не существует'));
+app.use((req, res, next) => {
+  next(new NotFoundError('Такой страницы не существует'));
 });
 
-app.use(handleErrors);
+app.use(errors()); // обработчик ошибок celebrate
+app.use(handleErrors); // центральный обработчик ошибок
 
 app.listen(3000, () => {
   console.log('server working');

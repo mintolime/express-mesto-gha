@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
@@ -13,6 +14,7 @@ const limiter = require('./utils/constants/limiter');
 const NotFoundError = require('./utils/errors/NotFoundError');
 const { regExp } = require('./utils/constants/regExp');
 
+const { PORT = 3000 } = process.env;
 const app = express(router);
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
@@ -20,7 +22,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
-
+app.use(cookieParser());
 // функционал работы роутеров
 app.post(
   '/signin',
@@ -59,6 +61,6 @@ app.use((req, res, next) => {
 app.use(errors()); // обработчик ошибок celebrate
 app.use(handleErrors); // центральный обработчик ошибок
 
-app.listen(3000, () => {
-  console.log('server working');
+app.listen(PORT, () => {
+  console.log(`Server working, your port ${PORT}`);
 });

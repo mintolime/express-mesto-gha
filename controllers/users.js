@@ -36,13 +36,19 @@ const createUser = (req, res) => {
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-    .then((newUser) => {
-      res.send(newUser);
+    .then(() => {
+      res.send({
+        name, about, avatar, email,
+      }); // при создании пользователя пароль не возвращается
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(BAD_REQUEST)
           .send({ message: 'Переданы некорректные данные при создании пользователя.' });
+      }
+      if (err.code === 11000) {
+        res.status(401)
+          .send({ message: 'Данный пользователь уже создан' });
       } else {
         res.status(INTERNAL_SERVER_ERROR)
           .send({ message: 'Произошла ошибка' });

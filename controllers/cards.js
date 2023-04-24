@@ -20,13 +20,17 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res) => {
   const { cardId } = req.params;
-
+  // ошибку выдает, но все же удаляет карточку
   Card.findOneAndDelete({ _id: cardId })
     .then((card) => {
       if (!card) {
         res.status(NOT_FOUND).send({
           message: 'Карточка с указанным id не найдена.',
         });
+      } if (card.owner.id !== req.user._id) {
+        res.status(NOT_FOUND).send({
+          message: 'Чужую карточку удалить нельзя',
+        }); // карточку удаляет , хоть и получает ошибку
       }
       res.send(card);
     })

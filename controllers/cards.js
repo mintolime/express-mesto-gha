@@ -1,14 +1,13 @@
 const Card = require('../models/card');
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../utils/errors');
+const { handleSucsessResponse } = require('../utils/handleSucsessResponse');
 
 const createCard = (req, res) => {
   const { _id } = req.user;
   const { name, link } = req.body;
 
   Card.create({ name, link, owner: _id })
-    .then((newCard) => {
-      res.send(newCard);
-    })
+    .then((newCard) => handleSucsessResponse(res, 201, newCard))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные при создании карточки' });
@@ -32,7 +31,7 @@ const deleteCard = (req, res) => {
           message: 'Чужую карточку удалить нельзя',
         }); // карточку удаляет , хоть и получает ошибку
       }
-      res.send(card);
+      return handleSucsessResponse(res, 200, card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -52,6 +51,7 @@ const getAllCard = (req, res) => {
     .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка,попробуйте ещё раз' }));
 };
 
+// здесь можно сделать универсальную функцию
 const likeCard = (req, res) => {
   const owner = req.user._id;
   const { cardId } = req.params;
@@ -60,7 +60,7 @@ const likeCard = (req, res) => {
       if (!card) {
         return res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
       }
-      return res.send(card);
+      return handleSucsessResponse(res, 200, card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {

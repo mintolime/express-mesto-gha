@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { handleSucsessResponse } = require('../utils/handleSucsessResponse');
 
 const User = require('../models/user');
 const {
@@ -36,11 +37,9 @@ const createUser = (req, res) => {
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-    .then(() => {
-      res.send({
-        name, about, avatar, email,
-      }); // при создании пользователя пароль не возвращается
-    })
+    .then(() => handleSucsessResponse(res, 201, {
+      name, about, avatar, email,
+    }))// при создании пользователя пароль не возвращается
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(BAD_REQUEST)
@@ -61,7 +60,7 @@ const getUserById = (req, res) => {
   User.findById(userId)
     .then((user) => {
       if (user) {
-        return res.send(user);
+        return handleSucsessResponse(res, 200, user);
       }
       return res.status(NOT_FOUND)
         .send({ message: 'Пользователь по указанному _id не найден' });
@@ -80,7 +79,7 @@ const getUserProfile = (req, res) => {
   User.findById(req.user._id)
     .then((user) => {
       if (user) {
-        return res.send(user);
+        return handleSucsessResponse(res, 200, user);
       }
       return res.status(NOT_FOUND)
         .send({ message: 'Пользователь по указанному _id не найден' });
@@ -97,7 +96,7 @@ const getUserProfile = (req, res) => {
 const getAllUsers = (req, res) => {
   User.find({})
     .then((card) => {
-      res.send(card);
+      handleSucsessResponse(res, 200, card);
     })
     .catch(() => res.status(INTERNAL_SERVER_ERROR)
       .send({ message: 'Произошла ошибка' }));
@@ -113,7 +112,7 @@ const updateUserProfile = (req, res) => {
         return res.status(NOT_FOUND)
           .send({ message: ' Пользователь с указанным _id не найден.' });
       }
-      return res.send(user);
+      return handleSucsessResponse(res, 200, user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -136,7 +135,7 @@ const updateUserAvatar = (req, res) => {
         return res.status(NOT_FOUND)
           .send({ message: ' Пользователь с указанным _id не найден.' });
       }
-      return res.send(user);
+      return handleSucsessResponse(res, 200, user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {

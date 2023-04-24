@@ -1,5 +1,4 @@
 const Card = require('../models/card');
-const { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../utils/errors');
 const { handleSucsessResponse } = require('../utils/handleSucsessResponse');
 
 // const UnauthorizedError = require('../utils/errors/UnauthorizedError');
@@ -47,50 +46,25 @@ const getAllCard = (req, res, next) => {
     .catch(next);
 };
 
-// здесь можно сделать универсальную функцию
-const likeCard = (req, res) => {
+const updateLike = (req, res, method, next) => {
   const owner = req.user._id;
   const { cardId } = req.params;
-  Card.findByIdAndUpdate(cardId, { $addToSet: { likes: owner } }, { new: true })
+  Card.findByIdAndUpdate(cardId, { [method]: { likes: owner } }, { new: true })
     .then((card) => {
       if (!card) {
-        return res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
+        throw new NotFoundError('Карточка с указанным _id не найдена');
       }
       return handleSucsessResponse(res, 200, card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(BAD_REQUEST).send({
-          message: 'Переданы некорректные данные для постановки лайка',
-        });
+        next(new BadRequest('Переданы некорректные данные '));
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка,попробуйте ещё раз' });
     });
 };
 
-const dislikeCard = (req, res) => {
-  const owner = req.user._id;
-  const { cardId } = req.params;
-  Card.findByIdAndUpdate(
-    cardId,
-    { $pull: { likes: owner } },
-    { new: true },
-  )
-    .then((card) => {
-      if (!card) {
-        return res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
-      }
-      return res.send(card);
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return res.status(BAD_REQUEST).send({
-          message: 'Переданы некорректные данные для удаления лайка',
-        });
-      }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка,попробуйте ещё раз' });
-    });
-};
+const likeCard = (req, res, next) => updateLike(req, res, '$addToSet', next);
+const dislikeCard = (req, res, next) => updateLike(req, res, '$pull', next);
 
 module.exports = {
   createCard, getAllCard, deleteCard, likeCard, dislikeCard,

@@ -24,9 +24,8 @@ const login = (req, res, next) => {
         httpOnly: true,
       }).send({ token });
     })
-    .catch((err) => {
+    .catch(() => {
       // возвращаем ошибку аутентификации
-      console.log(err.message);
       next(new UnauthorizedError('Необходима авторизация'));
     });
 };

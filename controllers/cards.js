@@ -1,7 +1,6 @@
 const Card = require('../models/card');
 const { handleSucsessResponse } = require('../utils/handleSucsessResponse');
 
-// const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 const BadRequest = require('../utils/errors/BadRequest');
 const ForbiddenError = require('../utils/errors/ForbiddenError');
 const NotFoundError = require('../utils/errors/NotFoundError');
@@ -30,7 +29,7 @@ const deleteCard = (req, res, next) => {
       } if (card.owner.toString() !== req.user._id) {
         throw new ForbiddenError('Чужую карточку удалить нельзя');
       } else {
-        return Card.findByIdAndRemove(cardId)
+        return Card.deleteOne({ _id: cardId })
           .then((data) => { handleSucsessResponse(res, 200, data); });
       }
     })
@@ -45,6 +44,7 @@ const deleteCard = (req, res, next) => {
 
 const getAllCard = (req, res, next) => {
   Card.find({})
+    .populate(['owner', 'likes'])
     .then((card) => {
       handleSucsessResponse(res, 200, card);
     })

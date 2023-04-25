@@ -17,11 +17,10 @@ const validationLogin = celebrate({
     password: Joi.string().required(),
   }),
 });
-
+// done
 const userIdValidation = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().required().length(24)
-      .pattern(/[a-z][0-9]+/),
+    userId: Joi.string().length(24).hex().required(),
   }),
 });
 
@@ -31,10 +30,10 @@ const updateProfileUserValidation = celebrate({
     about: Joi.string().required().min(2).max(30),
   }),
 });
-
+// done
 const updateAvatarValidation = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().pattern(regExp),
+    avatar: Joi.string().pattern(regExp).required(),
   }),
 });
 

@@ -40,9 +40,15 @@ const createUser = (req, res, next) => {
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-    .then(() => handleSucsessResponse(res, 201, {
-      name, about, avatar, email,
-    }))// при создании пользователя пароль не возвращается
+    .then((newUser) => {
+      const userData = {
+        name: newUser.name,
+        about: newUser.about,
+        avatar: newUser.avatar,
+        email: newUser.email,
+      };
+      return handleSucsessResponse(res, 201, userData);
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные '));

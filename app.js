@@ -23,8 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(cookieParser());
 // функционал работы роутеров
-app.post('/signup', validationLogin, createUser);
-app.post('/signin', validationAuthorization, login);
+app.post('/signup', validationAuthorization, createUser);
+app.post('/signin', validationLogin, login);
 
 // защита всех роутеров авторизацией
 app.use(auth);

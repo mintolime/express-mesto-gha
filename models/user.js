@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Данное поле обязательно к заполнению'],
     unique: true,
     validate: {
       validator: (value) => validator.isEmail(value),
@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'Данное поле обязательно к заполнению'],
     select: false,
   },
 }, { versionKey: false }); // для скрытия версий в момент создания

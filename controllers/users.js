@@ -24,10 +24,7 @@ const login = (req, res, next) => {
         httpOnly: true,
       }).send({ token });
     })
-    .catch(() => {
-      // возвращаем ошибку аутентификации
-      next(new UnauthorizedError('Необходима авторизация'));
-    });
+    .catch(() => { next(new UnauthorizedError('Необходима авторизация')); });
 };
 
 const createUser = (req, res, next) => {
@@ -51,8 +48,7 @@ const createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные '));
-      }
-      if (err.code === 11000) {
+      } else if (err.code === 11000) {
         next(new ConflictError('Данный пользователь уже создан'));
       } else {
         next(err);
@@ -70,11 +66,10 @@ const getUserById = (req, res, next) => {
       throw new NotFoundError('Пользователь по указанному _id не найден');
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные.'));
-      } else {
-        next(err);
+      if (err.kind === 'ObjectId') {
+        return next(new BadRequest('Переданы некорректные данные.'));
       }
+      return next(err);
     });
 };
 
@@ -88,10 +83,9 @@ const getUserProfile = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные.'));
-      } else {
-        next(err);
+        return next(new BadRequest('Переданы некорректные данные.'));
       }
+      return next(err);
     });
 };
 
@@ -116,10 +110,9 @@ const updateUserProfile = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные.'));
-      } else {
-        next(err);
+        return next(new BadRequest('Переданы некорректные данные.'));
       }
+      return next(err);
     });
 };
 
@@ -136,10 +129,9 @@ const updateUserAvatar = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные'));
-      } else {
-        next(err);
+        return next(new BadRequest('Переданы некорректные данные'));
       }
+      return next(err);
     });
 };
 

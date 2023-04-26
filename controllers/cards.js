@@ -5,6 +5,15 @@ const BadRequest = require('../utils/errors/BadRequest');
 const ForbiddenError = require('../utils/errors/ForbiddenError');
 const NotFoundError = require('../utils/errors/NotFoundError');
 
+const getAllCard = (req, res, next) => {
+  Card.find({})
+    .populate(['owner', 'likes'])
+    .then((card) => {
+      handleSucsessResponse(res, 200, card);
+    })
+    .catch(next);
+};
+
 const createCard = (req, res, next) => {
   const { _id } = req.user;
   const { name, link } = req.body;
@@ -13,10 +22,9 @@ const createCard = (req, res, next) => {
     .then((newCard) => handleSucsessResponse(res, 201, newCard))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные '));
-      } else {
-        next(err);
+        return next(new BadRequest('Переданы некорректные данные '));
       }
+      return next(err);
     });
 };
 
@@ -26,7 +34,7 @@ const deleteCard = (req, res, next) => {
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Пользователь по указанному _id не найден');
-      } if (card.owner.toString() !== req.user._id) {
+      } else if (card.owner.toString() !== req.user._id) {
         throw new ForbiddenError('Чужую карточку удалить нельзя');
       } else {
         return Card.deleteOne({ _id: cardId })
@@ -35,20 +43,10 @@ const deleteCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные '));
-      } else {
-        next(err);
+        return next(new BadRequest('Переданы некорректные данные '));
       }
+      return next(err);
     });
-};
-
-const getAllCard = (req, res, next) => {
-  Card.find({})
-    .populate(['owner', 'likes'])
-    .then((card) => {
-      handleSucsessResponse(res, 200, card);
-    })
-    .catch(next);
 };
 
 const updateLike = (req, res, method, next) => {
@@ -63,10 +61,9 @@ const updateLike = (req, res, method, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные '));
-      } else {
-        next(err);
+        return next(new BadRequest('Переданы некорректные данные '));
       }
+      return next(err);
     });
 };
 

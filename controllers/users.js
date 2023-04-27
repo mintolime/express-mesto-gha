@@ -20,9 +20,7 @@ const login = (req, res, next) => {
         'SECRET_KEY',
         { expiresIn: '7d' },
       );
-      res.cookie('jwt', token, {
-        httpOnly: true,
-      }).send({ token });
+      res.cookie('token', token, { maxAge: 3600000 * 24 * 7, httpOnly: true });
     })
     .catch(() => { next(new UnauthorizedError('Необходима авторизация')); });
 };

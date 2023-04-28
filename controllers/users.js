@@ -20,7 +20,8 @@ const login = (req, res, next) => {
         'SECRET_KEY',
         { expiresIn: '7d' },
       );
-      res.cookie('token', token, { maxAge: 3600000 * 24 * 7, httpOnly: true });
+      res.cookie('token', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true })
+        .send({ email });
     })
     .catch(() => { next(new UnauthorizedError('Необходима авторизация')); });
 };
@@ -44,10 +45,10 @@ const createUser = (req, res, next) => {
       return handleSucsessResponse(res, 201, userData);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные '));
-      } else if (err.code === 11000) {
+      if (err.code === 11000) {
         next(new ConflictError('Данный пользователь уже создан'));
+      } else if (err.name === 'ValidationError') {
+        next(new BadRequest('Переданы некорректные данные '));
       } else {
         next(err);
       }
@@ -55,8 +56,8 @@ const createUser = (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
-  const { userId } = req.params;
-  User.findById(userId)
+  // const { userId } = req.params;
+  User.findById(req.params)
     .then((user) => {
       if (user) {
         return handleSucsessResponse(res, 200, user);

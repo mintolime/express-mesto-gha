@@ -8,8 +8,8 @@ const auth = (req, res, next) => {
   if (!token) {
     return next(new UnauthorizedError('Необходима авторизация'));
   }
-  let payload;
 
+  let payload;
   try {
     payload = jwt.verify(token, 'SECRET_KEY');
   } catch (err) {

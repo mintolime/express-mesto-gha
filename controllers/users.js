@@ -56,8 +56,8 @@ const createUser = (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
-  // const { userId } = req.params;
-  User.findById(req.params)
+  const { userId } = req.params;
+  User.findById(userId)
     .then((user) => {
       if (user) {
         return handleSucsessResponse(res, 200, user);

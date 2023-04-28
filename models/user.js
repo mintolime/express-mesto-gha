@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
 }, { versionKey: false }); // для скрытия версий в момент создания
-
+// done
 userSchema.statics.findUserByCredentials = function _(email, password) {
   return this.findOne({ email }).select('+password')
     .then((user) => {

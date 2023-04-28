@@ -71,7 +71,7 @@ const getUserById = (req, res, next) => {
       return next(err);
     });
 };
-
+// done
 const getUserProfile = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {

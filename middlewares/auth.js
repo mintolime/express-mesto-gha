@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
+// done
 // eslint-disable-next-line consistent-return
 const auth = (req, res, next) => {
   // тут будет вся авторизация
   const { token } = req.cookies;
   if (!token) {
-    console.log(token);
     next(new UnauthorizedError('Необходима авторизация'));
   }
   let payload;

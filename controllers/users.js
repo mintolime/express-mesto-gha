@@ -95,11 +95,8 @@ const getAllUsers = (req, res, next) => {
     .catch(next);
 };
 
-const updateUserProfile = (req, res, next) => {
-  const ownerId = req.user._id;
-  const { name, about } = req.body;
-
-  User.findByIdAndUpdate(ownerId, { name, about }, { new: true, runValidators: true })
+const updateUserData = (req, res, next, userData) => {
+  User.findByIdAndUpdate(req.user._id, userData, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь по указанному _id не найден');
@@ -114,23 +111,15 @@ const updateUserProfile = (req, res, next) => {
     });
 };
 
+const updateUserProfile = (req, res, next) => {
+  const userData = {
+    name: req.body.name,
+    about: req.body.about,
+  };
+  updateUserData(req, res, next, userData);
+};
 const updateUserAvatar = (req, res, next) => {
-  const ownerId = req.user._id;
-  const { avatar } = req.body;
-
-  User.findByIdAndUpdate(ownerId, { avatar }, { new: true, runValidators: true })
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Пользователь по указанному _id не найден');
-      }
-      return handleSucsessResponse(res, 200, user);
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(new BadRequest('Переданы некорректные данные'));
-      }
-      return next(err);
-    });
+  updateUserData(req, res, next, { avatar: req.body.avatar });
 };
 
 module.exports = {

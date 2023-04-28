@@ -6,7 +6,7 @@ const auth = (req, res, next) => {
   // тут будет вся авторизация
   const { token } = req.cookies;
   if (!token) {
-    next(new UnauthorizedError('Необходима авторизация'));
+    return next(new UnauthorizedError('Необходима авторизация'));
   }
   let payload;
 

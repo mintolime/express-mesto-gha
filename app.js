@@ -11,7 +11,6 @@ const appAuth = require('./routes/auth');
 const { auth } = require('./middlewares/auth');
 const { handleErrors } = require('./middlewares/handleErrors');
 const limiter = require('./utils/constants/limiter');
-const NotFoundError = require('./utils/errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 const app = express(router);
@@ -29,8 +28,6 @@ app.use(auth);
 // Apply the rate limiting middleware to all requests
 app.use(limiter);
 app.use(router);
-
-app.use((req, res, next) => { next(new NotFoundError('Такой страницы не существует')); });
 
 app.use(errors()); // обработчик ошибок celebrate
 app.use(handleErrors); // центральный обработчик ошибок

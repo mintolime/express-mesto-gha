@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { handleSucsessResponse } = require('../utils/handleSucsessResponse');
 
-const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 const BadRequest = require('../utils/errors/BadRequest');
 const ConflictError = require('../utils/errors/ConflictError');
 const NotFoundError = require('../utils/errors/NotFoundError');
@@ -23,7 +22,7 @@ const login = (req, res, next) => {
       res.cookie('token', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true })
         .send({ email });
     })
-    .catch(() => { next(new UnauthorizedError('Необходима авторизация')); });
+    .catch(next);
 };
 
 const createUser = (req, res, next) => {
@@ -64,12 +63,7 @@ const getUserById = (req, res, next) => {
       }
       throw new NotFoundError('Пользователь по указанному _id не найден');
     })
-    .catch((err) => {
-      if (err.kind === 'ObjectId') {
-        return next(new BadRequest('Переданы некорректные данные.'));
-      }
-      return next(err);
-    });
+    .catch((err) => { next(err); });
 };
 // done
 const getUserProfile = (req, res, next) => {
@@ -80,12 +74,7 @@ const getUserProfile = (req, res, next) => {
       }
       throw new NotFoundError('Пользователь по указанному _id не найден');
     })
-    .catch((err) => {
-      if (err.kind === 'ObjectId') {
-        return next(new BadRequest('Переданы некорректные данные.'));
-      }
-      return next(err);
-    });
+    .catch((err) => { next(err); });
 };
 
 const getAllUsers = (req, res, next) => {

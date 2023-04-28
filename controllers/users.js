@@ -81,7 +81,7 @@ const getUserProfile = (req, res, next) => {
       throw new NotFoundError('Пользователь по указанному _id не найден');
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.kind === 'ObjectId') {
         return next(new BadRequest('Переданы некорректные данные.'));
       }
       return next(err);

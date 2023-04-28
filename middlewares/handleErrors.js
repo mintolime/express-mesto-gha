@@ -1,5 +1,3 @@
-const NotFoundError = require('../utils/errors/NotFoundError');
-
 const handleErrors = (err, req, res, next) => {
   // если у ошибки нет статуса, выставляем 500
   const { statusCode = 500, message } = err;
@@ -12,7 +10,7 @@ const handleErrors = (err, req, res, next) => {
         ? 'На сервере произошла ошибка'
         : message,
     });
-  next(new NotFoundError('Такой страницы не существует'));
+  next();
 };
 
 module.exports = { handleErrors };

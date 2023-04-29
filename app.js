@@ -9,6 +9,7 @@ const router = require('./routes');
 const appAuth = require('./routes/auth');
 const { auth } = require('./middlewares/auth');
 const { handleErrors } = require('./middlewares/handleErrors');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./utils/constants/limiter');
 const NotFoundError = require('./utils/errors/NotFoundError');
 
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(cookieParser());
+app.use(requestLogger); // подключаем логгер запросов
 // функционал работы роутеров
 app.use(appAuth);
 // защита всех роутеров авторизацией
@@ -29,6 +31,7 @@ app.use(auth);
 app.use(limiter);
 app.use(router);
 
+app.use(errorLogger);
 app.use((req, res, next) => { next(new NotFoundError('Такой страницы не существует')); });
 
 app.use(errors()); // обработчик ошибок celebrate

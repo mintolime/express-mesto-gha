@@ -13,7 +13,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./utils/constants/limiter');
 const NotFoundError = require('./utils/errors/NotFoundError');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3005 } = process.env;
 const app = express(router);
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
